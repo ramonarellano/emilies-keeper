@@ -1,9 +1,26 @@
+import { Suspense } from "react";
+import { loggUt } from "./actions";
+import { lagSupabaseServer } from "@/lib/supabase/server";
+
 const omrader = [
   { emoji: "✅", tittel: "Oppgaver", tekst: "Det som skal gjøres, og når." },
   { emoji: "🎁", tittel: "Ønskelister", tekst: "Ting jeg drømmer om å få." },
   { emoji: "🌱", tittel: "Mål", tekst: "Det jeg jobber mot." },
   { emoji: "✨", tittel: "Og mer", tekst: "Det finner vi ut av sammen." },
 ];
+
+async function Innlogget() {
+  const supabase = await lagSupabaseServer();
+  const { data } = await supabase.auth.getClaims();
+  return (
+    <form action={loggUt} className="mt-10 flex items-center justify-between text-sm text-muted">
+      <span className="truncate">Logget inn som {data?.claims?.email}</span>
+      <button type="submit" className="ml-4 shrink-0 font-medium text-accent">
+        Logg ut
+      </button>
+    </form>
+  );
+}
 
 export default function Home() {
   return (
@@ -28,6 +45,10 @@ export default function Home() {
           </li>
         ))}
       </ul>
+
+      <Suspense>
+        <Innlogget />
+      </Suspense>
     </main>
   );
 }

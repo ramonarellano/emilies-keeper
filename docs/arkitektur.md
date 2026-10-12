@@ -1,6 +1,6 @@
 # Arkitektur og teknologivalg
 
-Sist oppdatert: 12. oktober 2026
+Sist oppdatert: 12. oktober 2026 (innlogging lagt til)
 
 ## Hva vi bygger
 
@@ -27,7 +27,7 @@ Hvis vi senere vil ha en ekte app, kan web-appen pakkes inn med Capacitor, eller
 | Styling | Tailwind CSS 4 | Fargene ligger som variabler i `src/app/globals.css`, med lyst og mørkt tema |
 | Komponenter | shadcn/ui og Framer Motion | Legges til når vi trenger dem |
 | Hosting | Vercel (gratisplan) | Rulles ut automatisk fra `main`, med test-URL per pull request |
-| Database og innlogging | Supabase (Postgres og Auth), EU-region | Neste steg. Radnivåsikkerhet (RLS) så hver bruker bare ser sine egne data |
+| Database og innlogging | Supabase (Postgres og Auth), EU-region (Stockholm) | Radnivåsikkerhet (RLS) så hver bruker bare ser sine egne data. Tabeller lages etter hvert som kravene kommer |
 | Varsler | Web Push (VAPID) via service worker (`public/sw.js`) | Abonnementer lagres i Supabase |
 | Planlagte varsler | Tidsplanlegging i Supabase (pg_cron) eller Upstash QStash | Vercel-cron på gratisplanen kjører bare én gang i døgnet |
 
@@ -35,6 +35,12 @@ Hvis vi senere vil ha en ekte app, kan web-appen pakkes inn med Capacitor, eller
 
 - Repoet er **offentlig**. Hemmeligheter (API-nøkler, databasepassord, VAPID-nøkler) ligger bare i miljøvariabler i Vercel og Supabase og i lokale `.env.local`-filer, som aldri sjekkes inn.
 - Appen krever innlogging. Data ligger i EU.
+
+## Innlogging
+
+- Innlogging med **engangskode på e-post**, ikke lenke. En lenke ville åpnet Safari, og da havner innloggingen der i stedet for i den installerte appen. Koden skrives inn i appen.
+- **Bare brukere som er opprettet i Supabase kan logge inn** (`shouldCreateUser: false`). Registrering av nye brukere er slått av i Supabase.
+- `src/proxy.ts` fornyer økten og sender den som ikke er logget inn til `/logg-inn`. Ikoner, manifest og service worker er tilgjengelige uten innlogging.
 
 ## Struktur
 
@@ -45,6 +51,8 @@ public/sw.js           service worker (installering og push-varsler)
 src/app/               sider, layout, manifest og ikoner
 src/components/        gjenbrukbare komponenter
 src/lib/               hjelpefunksjoner
+src/lib/supabase/      Supabase-klienter for nettleser og server
+src/proxy.ts           innloggingssjekk på hver forespørsel
 ```
 
 ## Arbeidsflyt

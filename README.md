@@ -9,6 +9,7 @@ Et samarbeidsprosjekt mellom Emilie og pappa: en personlig app for oppgaver, øn
 
 ```bash
 npm install
+cp .env.local.example .env.local   # fyll inn verdiene fra Supabase
 npm run dev
 ```
 
