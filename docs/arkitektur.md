@@ -38,8 +38,9 @@ Hvis vi senere vil ha en ekte app, kan web-appen pakkes inn med Capacitor, eller
 
 ## Innlogging
 
-- Innlogging med **engangskode på e-post**, ikke lenke. En lenke ville åpnet Safari, og da havner innloggingen der i stedet for i den installerte appen. Koden skrives inn i appen.
-- **Bare brukere som er opprettet i Supabase kan logge inn** (`shouldCreateUser: false`). Registrering av nye brukere er slått av i Supabase.
+- Innlogging med **e-post og passord**. iPhone kan lagre passordet i nøkkelringen og fylle det inn med Face ID.
+- Vi bruker ikke engangskode eller lenke på e-post. Supabases innebygde e-posttjeneste sender bare til medlemmer av Supabase-teamet, og egne e-postmaler krever eget SMTP-oppsett. Med en lenke ville innloggingen dessuten havnet i Safari og ikke i den installerte appen.
+- **Brukere opprettes manuelt i Supabase.** Registrering av nye brukere er slått av.
 - `src/proxy.ts` fornyer økten og sender den som ikke er logget inn til `/logg-inn`. Ikoner, manifest og service worker er tilgjengelige uten innlogging.
 
 ## Struktur
