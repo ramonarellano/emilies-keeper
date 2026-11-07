@@ -7,6 +7,13 @@
   --card: #ffffff;
   --border: #eee3da;
   --accent: #c2577a;
+  /* Post-it-farger: duse pastell */
+  --lapp-1: #fdf0b8;
+  --lapp-2: #fbd9e0;
+  --lapp-3: #d6efdf;
+  --lapp-4: #e3dcf5;
+  --lapp-5: #fde2cc;
+  --lapp-tekst: #3a3236;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,6 +24,12 @@
     --card: #26212b;
     --border: #38313e;
     --accent: #e8879f;
+    --lapp-1: #4a4430;
+    --lapp-2: #4b3239;
+    --lapp-3: #2f4236;
+    --lapp-4: #3a3450;
+    --lapp-5: #4b3a2e;
+    --lapp-tekst: #f3ece6;
   }
 }
 
@@ -35,4 +48,42 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Sidelengs scrolling uten synlig rullefelt */
+.uten-rullefelt {
+  scrollbar-width: none;
+}
+.uten-rullefelt::-webkit-scrollbar {
+  display: none;
+}
+
+/* Bunnark (dialog) */
+dialog.ark {
+  margin: auto auto 0;
+  width: 100%;
+  max-width: 28rem;
+  max-height: 85dvh;
+  border: 0;
+  padding: 0;
+  border-radius: 1.5rem 1.5rem 0 0;
+  background: var(--card);
+  color: var(--foreground);
+}
+dialog.ark::backdrop {
+  background: rgb(30 20 30 / 0.35);
+}
+dialog.ark[open] {
+  animation: ark-inn 220ms ease-out;
+}
+@keyframes ark-inn {
+  from {
+    transform: translateY(100%);
+  }
+}
+@media (min-width: 640px) {
+  dialog.ark {
+    margin: auto;
+    border-radius: 1.5rem;
+  }
 }

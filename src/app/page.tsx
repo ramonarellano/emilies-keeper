@@ -1,21 +1,42 @@
 import { Suspense } from "react";
 import { loggUt } from "./actions";
+import { Lister } from "@/components/lister";
+import { OppgaveLapper } from "@/components/oppgave-lapper";
+import { hentForslag, hentLister, hentOppgaver } from "@/lib/data";
 import { lagSupabaseServer } from "@/lib/supabase/server";
 
-const omrader = [
-  { emoji: "✅", tittel: "Oppgaver", tekst: "Det som skal gjøres, og når." },
-  { emoji: "🎁", tittel: "Ønskelister", tekst: "Ting jeg drømmer om å få." },
-  { emoji: "🌱", tittel: "Mål", tekst: "Det jeg jobber mot." },
-  { emoji: "✨", tittel: "Og mer", tekst: "Det finner vi ut av sammen." },
-];
+async function Innhold() {
+  const [oppgaver, forslag, lister] = await Promise.all([hentOppgaver(), hentForslag(), hentLister()]);
+  return (
+    <>
+      <OppgaveLapper oppgaver={oppgaver} forslag={forslag} />
+      <Lister lister={lister} />
+    </>
+  );
+}
+
+function Laster() {
+  return (
+    <div aria-hidden className="animate-pulse">
+      <div className="h-7 w-32 rounded bg-border" />
+      <div className="mt-7 flex gap-4">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="size-36 shrink-0 rounded-md bg-border/60" />
+        ))}
+      </div>
+      <div className="mt-12 h-7 w-24 rounded bg-border" />
+      <div className="mt-4 h-28 rounded-2xl bg-border/60" />
+    </div>
+  );
+}
 
 async function Innlogget() {
   const supabase = await lagSupabaseServer();
   const { data } = await supabase.auth.getClaims();
   return (
-    <form action={loggUt} className="mt-10 flex items-center justify-between text-sm text-muted">
+    <form action={loggUt} className="mt-14 flex items-center justify-between text-xs text-muted">
       <span className="truncate">Logget inn som {data?.claims?.email}</span>
-      <button type="submit" className="ml-4 shrink-0 font-medium text-accent">
+      <button type="submit" className="ml-4 shrink-0 font-medium">
         Logg ut
       </button>
     </form>
@@ -24,28 +45,11 @@ async function Innlogget() {
 
 export default function Home() {
   return (
-    <main className="mx-auto w-full max-w-md flex-1 px-5 pt-[max(3rem,env(safe-area-inset-top))] pb-12">
-      <p className="text-sm font-medium tracking-wide text-accent uppercase">Emilies Keeper</p>
-      <h1 className="mt-2 font-serif text-4xl font-semibold leading-tight">Hei, Emilie! 👋</h1>
-      <p className="mt-3 text-muted">
-        Her kommer appen din. Den bygges etter kravene du skriver.
-      </p>
-
-      <ul className="mt-10 grid grid-cols-2 gap-3">
-        {omrader.map((o) => (
-          <li
-            key={o.tittel}
-            className="rounded-2xl border border-border bg-card p-4 shadow-sm"
-          >
-            <span className="text-2xl" aria-hidden>
-              {o.emoji}
-            </span>
-            <h2 className="mt-3 font-serif text-lg font-semibold">{o.tittel}</h2>
-            <p className="mt-1 text-sm text-muted">{o.tekst}</p>
-          </li>
-        ))}
-      </ul>
-
+    <main className="mx-auto w-full max-w-md flex-1 overflow-x-hidden px-5 pt-[max(2.5rem,env(safe-area-inset-top))] pb-12">
+      <h1 className="mb-6 font-serif text-3xl font-semibold leading-tight">Hei, Emilie!</h1>
+      <Suspense fallback={<Laster />}>
+        <Innhold />
+      </Suspense>
       <Suspense>
         <Innlogget />
       </Suspense>

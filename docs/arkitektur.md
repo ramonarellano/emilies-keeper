@@ -1,6 +1,6 @@
 # Arkitektur og teknologivalg
 
-Sist oppdatert: 12. oktober 2026 (innlogging lagt til)
+Sist oppdatert: 7. november 2026 (oppgaver og lister)
 
 ## Hva vi bygger
 
@@ -43,6 +43,18 @@ Hvis vi senere vil ha en ekte app, kan web-appen pakkes inn med Capacitor, eller
 - **Brukere opprettes manuelt i Supabase.** Registrering av nye brukere er slått av.
 - `src/proxy.ts` fornyer økten og sender den som ikke er logget inn til `/logg-inn`. Ikoner, manifest og service worker er tilgjengelige uten innlogging.
 
+## Data
+
+Tabellene lages med SQL-filer i `supabase/migrations/`, som kjøres i Supabase (SQL Editor) i nummerrekkefølge. Alle tabeller har en `bruker_id` og radnivåsikkerhet, så hver bruker bare ser sine egne rader.
+
+| Tabell | Innhold |
+|---|---|
+| `oppgaver` | Post-it-lappene: tittel, detaljer og `ferdig_tid`. Ferdige oppgaver vises ut dagen (norsk tid) og blir så borte fra forsiden, men ligger igjen som forslag når en ny oppgave skal lages |
+| `lister` | Navn og `fjern_avhukede`, som avgjør om ting slettes eller blir stående når de hukes av |
+| `listepunkter` | Tingene i en liste |
+
+Endringer skjer i serverhandlinger (`src/app/actions.ts`) som kaller `refresh()`. Komponentene viser endringen med en gang med `useOptimistic`, før svaret fra serveren kommer.
+
 ## Struktur
 
 ```
@@ -54,6 +66,7 @@ src/components/        gjenbrukbare komponenter
 src/lib/               hjelpefunksjoner
 src/lib/supabase/      Supabase-klienter for nettleser og server
 src/proxy.ts           innloggingssjekk på hver forespørsel
+supabase/migrations/   SQL for tabeller og tilgangsregler
 ```
 
 ## Arbeidsflyt
