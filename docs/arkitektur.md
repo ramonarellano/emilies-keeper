@@ -30,6 +30,7 @@ Hvis vi senere vil ha en ekte app, kan web-appen pakkes inn med Capacitor, eller
 | Database og innlogging | Supabase (Postgres og Auth), EU-region (Stockholm) | Radnivåsikkerhet (RLS) så hver bruker bare ser sine egne data. Tabeller lages etter hvert som kravene kommer |
 | Varsler | Web Push (VAPID) via service worker (`public/sw.js`) | Abonnementer lagres i Supabase |
 | Planlagte varsler | Tidsplanlegging i Supabase (pg_cron) eller Upstash QStash | Vercel-cron på gratisplanen kjører bare én gang i døgnet |
+| Holde databasen våken | Vercel-cron kaller `/api/hold-vaken` hver morgen (`vercel.json`) | Supabase setter gratisprosjekter på pause etter en uke uten bruk. Endepunktet gjør én spørring, og krever `CRON_SECRET` når den er satt i Vercel |
 
 ## Sikkerhet
 

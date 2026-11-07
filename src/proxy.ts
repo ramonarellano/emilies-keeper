@@ -36,6 +36,7 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Alt unntatt filer som må være tilgjengelige uten innlogging (ikoner, manifest, service worker).
-  matcher: ["/((?!_next/static|_next/image|icon|apple-icon|manifest.webmanifest|sw.js).*)"],
+  // Alt unntatt det som må være tilgjengelig uten innlogging (ikoner, manifest, service worker og
+  // det daglige kallet som holder Supabase våken).
+  matcher: ["/((?!_next/static|_next/image|icon|apple-icon|manifest.webmanifest|sw.js|api/hold-vaken).*)"],
 };

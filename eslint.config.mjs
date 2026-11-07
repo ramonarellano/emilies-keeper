@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Arbeidstrær for Claude-økter, med egne kopier og byggefiler.
+    ".claude/**",
   ]),
 ]);
 
