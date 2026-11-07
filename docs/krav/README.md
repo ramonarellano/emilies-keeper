@@ -13,7 +13,7 @@ Her skriver Emilie (med hjelp fra Claude) ned hva appen skal kunne. **Ett krav p
 
 Status: Ny
 Prioritet: Høy | Middels | Lav
-Område: Oppgaver | Ønskelister | Mål | Varsler | Utseende | Annet
+Område: Oppgaver | Lister | Ønskelister | Mål | Varsler | Utseende | Annet
 
 ## Hva vil jeg kunne gjøre?
 Som Emilie vil jeg ... slik at ...
@@ -32,6 +32,9 @@ Beskrivelse, skisse eller lenke til bilde.
 Status endres av den som bygger: `Ny` → `Under arbeid` → `Ferdig`.
 
 ## Slik leveres et krav
+
+Emilie kan også skrive kravene i kravdokumentet på Google Drive. Da flytter Claude dem hit, ett per fil, og avklarer det som er uklart.
+
 
 1. Lag en ny gren: `krav/NNN-kort-navn`
 2. Legg til filen i `docs/krav/`
