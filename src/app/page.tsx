@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { loggUt } from "./actions";
 import { Lister } from "@/components/lister";
@@ -6,6 +7,8 @@ import { hentForslag, hentLister, hentOppgaver } from "@/lib/data";
 import { lagSupabaseServer } from "@/lib/supabase/server";
 
 async function Innhold() {
+  // Innholdet er personlig og avhenger av klokka («i dag»), så det hentes ved hver forespørsel.
+  await connection();
   const [oppgaver, forslag, lister] = await Promise.all([hentOppgaver(), hentForslag(), hentLister()]);
   return (
     <>
@@ -31,6 +34,8 @@ function Laster() {
 }
 
 async function Innlogget() {
+  // getClaims() sjekker utløpstiden på økten mot klokka.
+  await connection();
   const supabase = await lagSupabaseServer();
   const { data } = await supabase.auth.getClaims();
   return (
